@@ -6,8 +6,6 @@ services:
       - "3000:3000"
     volumes:
       - .:/usr/learnhouse
-    env_file:
-      - ./extra/example-learnhouse-conf.env
     depends_on:
       db:
         condition: service_healthy
