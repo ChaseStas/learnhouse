@@ -13,6 +13,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    labels:
+      - traefik.http.routers.https-0-fo8884wssogockwsk884oksw-app.loadbalancer.server.port=3000
   db:
     image: postgres:16-alpine
     restart: always
