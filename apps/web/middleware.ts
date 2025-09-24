@@ -61,9 +61,16 @@ export default async function middleware(req: NextRequest) {
   // Out of orgslug paths & rewrite
   const standard_paths = ['/home']
   const auth_paths = ['/login', '/signup', '/reset', '/forgot']
+  const api_paths = ['/api']
+  
   if (standard_paths.includes(pathname)) {
     // Redirect to the same pathname with the original search params
     return NextResponse.rewrite(new URL(`${pathname}${search}`, req.url))
+  }
+  
+  // Don't rewrite API requests - let them pass through
+  if (api_paths.some(path => pathname.startsWith(path))) {
+    return NextResponse.next()
   }
 
   if (auth_paths.includes(pathname)) {
