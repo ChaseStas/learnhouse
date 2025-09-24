@@ -16,20 +16,22 @@ export function OrgProvider({ children, orgslug }: { children: React.ReactNode, 
   const accessToken = session?.data?.tokens?.access_token
   const isAllowedPathname = ['/login', '/signup'].includes(pathname);
 
-  // Debug logging for orgslug
-  if (!orgslug || orgslug === 'undefined') {
-    console.error('ERROR: OrgProvider received undefined or null orgslug!')
-    console.error('orgslug prop:', orgslug)
-    console.error('typeof orgslug:', typeof orgslug)
-    return <ErrorUI message='Organization not found' />
-  }
+  // Debug logging
+  console.log('=== ORG CONTEXT DEBUG ===')
+  console.log('orgslug prop:', orgslug)
+  console.log('orgslug type:', typeof orgslug)
+  console.log('getAPIUrl():', getAPIUrl())
+  console.log('getAPIUrl() type:', typeof getAPIUrl())
+  console.log('org API URL:', `${getAPIUrl()}orgs/slug/${orgslug}`)
+  console.log('orgs API URL:', `${getAPIUrl()}orgs/user/page/1/limit/10`)
+  console.log('========================')
 
   const { data: org, error: orgError } = useSWR(
-    orgslug ? `${getAPIUrl()}orgs/slug/${orgslug}` : null,
+    `${getAPIUrl()}orgs/slug/${orgslug}`,
     (url) => swrFetcher(url, accessToken)
   )
   const { data: orgs, error: orgsError } = useSWR(
-    orgslug ? `${getAPIUrl()}orgs/user/page/1/limit/10` : null,
+    `${getAPIUrl()}orgs/user/page/1/limit/10`,
     (url) => swrFetcher(url, accessToken)
   )
 
