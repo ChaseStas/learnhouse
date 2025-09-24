@@ -43,9 +43,17 @@ export default async function middleware(req: NextRequest) {
   console.log('LEARNHOUSE_DOMAIN:', LEARNHOUSE_DOMAIN)
   console.log('cookie_orgslug:', cookie_orgslug)
   
-  const orgslug = fullhost
-    ? fullhost.replace(`.${LEARNHOUSE_DOMAIN}`, '')
-    : (default_org as string)
+  // Calculate orgslug based on hosting mode
+  let orgslug: string
+  if (hosting_mode === 'multi') {
+    // Multi org mode: extract org from subdomain
+    orgslug = fullhost && LEARNHOUSE_DOMAIN
+      ? fullhost.replace(`.${LEARNHOUSE_DOMAIN}`, '')
+      : (default_org as string)
+  } else {
+    // Single org mode: always use default org
+    orgslug = default_org as string
+  }
     
   console.log('calculated orgslug:', orgslug)
   console.log('========================')
@@ -165,11 +173,6 @@ export default async function middleware(req: NextRequest) {
 
   // Multi Organization Mode
   if (hosting_mode === 'multi') {
-    // Get the organization slug from the URL
-    const orgslug = fullhost
-      ? fullhost.replace(`.${LEARNHOUSE_DOMAIN}`, '')
-      : (default_org as string)
-    
     // Check if orgslug is undefined or empty
     if (!orgslug || orgslug === 'undefined') {
       console.error('ERROR: Org slug is undefined or empty in multi-org mode!')
@@ -196,9 +199,6 @@ export default async function middleware(req: NextRequest) {
 
   // Single Organization Mode
   if (hosting_mode === 'single') {
-    // Get the default organization slug
-    const orgslug = default_org as string
-    
     // Check if orgslug is undefined or empty
     if (!orgslug || orgslug === 'undefined') {
       console.error('ERROR: Default org is undefined or empty!')

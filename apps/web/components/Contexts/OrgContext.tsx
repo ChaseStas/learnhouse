@@ -19,7 +19,9 @@ export function OrgProvider({ children, orgslug }: { children: React.ReactNode, 
   // Debug logging
   console.log('=== ORG CONTEXT DEBUG ===')
   console.log('orgslug prop:', orgslug)
+  console.log('orgslug type:', typeof orgslug)
   console.log('getAPIUrl():', getAPIUrl())
+  console.log('getAPIUrl() type:', typeof getAPIUrl())
   console.log('org API URL:', `${getAPIUrl()}orgs/slug/${orgslug}`)
   console.log('orgs API URL:', `${getAPIUrl()}orgs/user/page/1/limit/10`)
   console.log('========================')
