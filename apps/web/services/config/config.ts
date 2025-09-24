@@ -1,12 +1,6 @@
 export const LEARNHOUSE_HTTP_PROTOCOL =
   process.env.NEXT_PUBLIC_LEARNHOUSE_HTTPS === 'true' ? 'https://' : 'http://'
 const LEARNHOUSE_API_URL = `${process.env.NEXT_PUBLIC_LEARNHOUSE_API_URL}`
-
-console.log('=== IMMEDIATE API URL DEBUG ===')
-console.log('Raw process.env.NEXT_PUBLIC_LEARNHOUSE_API_URL:', process.env.NEXT_PUBLIC_LEARNHOUSE_API_URL)
-console.log('Constructed LEARNHOUSE_API_URL:', LEARNHOUSE_API_URL)
-console.log('LEARNHOUSE_API_URL includes "undefined":', LEARNHOUSE_API_URL.includes('undefined'))
-console.log('=================================')
 export const LEARNHOUSE_BACKEND_URL = `${process.env.NEXT_PUBLIC_LEARNHOUSE_BACKEND_URL}`
 export const LEARNHOUSE_DOMAIN = process.env.NEXT_PUBLIC_LEARNHOUSE_DOMAIN
 export const LEARNHOUSE_TOP_DOMAIN =
@@ -28,8 +22,6 @@ export const getAPIUrl = () => {
   console.log('=== API URL DEBUG ===')
   console.log('LEARNHOUSE_API_URL:', LEARNHOUSE_API_URL)
   console.log('NEXT_PUBLIC_LEARNHOUSE_API_URL:', process.env.NEXT_PUBLIC_LEARNHOUSE_API_URL)
-  console.log('typeof LEARNHOUSE_API_URL:', typeof LEARNHOUSE_API_URL)
-  console.log('LEARNHOUSE_API_URL length:', LEARNHOUSE_API_URL?.length)
   console.log('====================')
   return LEARNHOUSE_API_URL
 }
