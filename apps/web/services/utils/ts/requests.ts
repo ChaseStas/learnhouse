@@ -75,6 +75,12 @@ export const RequestBodyFormWithAuthHeader = (
 }
 
 export const swrFetcher = async (url: string, token?: string) => {
+  // Debug logging
+  console.log('=== SWR FETCHER DEBUG ===')
+  console.log('URL being fetched:', url)
+  console.log('Token present:', !!token)
+  console.log('========================')
+  
   // Create the request options
   let HeadersConfig = new Headers(
     token
@@ -96,6 +102,8 @@ export const swrFetcher = async (url: string, token?: string) => {
     // Return the data
     return res
   } catch (error: any) {
+    console.error('SWR Fetcher Error:', error)
+    console.error('URL that failed:', url)
     throw error
   }
 }

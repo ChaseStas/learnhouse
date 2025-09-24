@@ -33,9 +33,22 @@ export default async function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl
   const fullhost = req.headers ? req.headers.get('host') : ''
   const cookie_orgslug = req.cookies.get('learnhouse_current_orgslug')?.value
+  
+  // Debug logging
+  console.log('=== MIDDLEWARE DEBUG ===')
+  console.log('hosting_mode:', hosting_mode)
+  console.log('default_org:', default_org)
+  console.log('pathname:', pathname)
+  console.log('fullhost:', fullhost)
+  console.log('LEARNHOUSE_DOMAIN:', LEARNHOUSE_DOMAIN)
+  console.log('cookie_orgslug:', cookie_orgslug)
+  
   const orgslug = fullhost
     ? fullhost.replace(`.${LEARNHOUSE_DOMAIN}`, '')
     : (default_org as string)
+    
+  console.log('calculated orgslug:', orgslug)
+  console.log('========================')
 
   // Out of orgslug paths & rewrite
   const standard_paths = ['/home']
@@ -156,6 +169,16 @@ export default async function middleware(req: NextRequest) {
     const orgslug = fullhost
       ? fullhost.replace(`.${LEARNHOUSE_DOMAIN}`, '')
       : (default_org as string)
+    
+    // Check if orgslug is undefined or empty
+    if (!orgslug || orgslug === 'undefined') {
+      console.error('ERROR: Org slug is undefined or empty in multi-org mode!')
+      console.error('fullhost:', fullhost)
+      console.error('LEARNHOUSE_DOMAIN:', LEARNHOUSE_DOMAIN)
+      console.error('default_org:', default_org)
+      return NextResponse.rewrite(new URL('/error', req.url))
+    }
+    
     const response = NextResponse.rewrite(
       new URL(`/orgs/${orgslug}${pathname}`, req.url)
     )
@@ -175,6 +198,15 @@ export default async function middleware(req: NextRequest) {
   if (hosting_mode === 'single') {
     // Get the default organization slug
     const orgslug = default_org as string
+    
+    // Check if orgslug is undefined or empty
+    if (!orgslug || orgslug === 'undefined') {
+      console.error('ERROR: Default org is undefined or empty!')
+      console.error('default_org:', default_org)
+      console.error('NEXT_PUBLIC_LEARNHOUSE_DEFAULT_ORG:', process.env.NEXT_PUBLIC_LEARNHOUSE_DEFAULT_ORG)
+      return NextResponse.rewrite(new URL('/error', req.url))
+    }
+    
     const response = NextResponse.rewrite(
       new URL(`/orgs/${orgslug}${pathname}`, req.url)
     )

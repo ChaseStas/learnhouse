@@ -16,6 +16,14 @@ export function OrgProvider({ children, orgslug }: { children: React.ReactNode, 
   const accessToken = session?.data?.tokens?.access_token
   const isAllowedPathname = ['/login', '/signup'].includes(pathname);
 
+  // Debug logging
+  console.log('=== ORG CONTEXT DEBUG ===')
+  console.log('orgslug prop:', orgslug)
+  console.log('getAPIUrl():', getAPIUrl())
+  console.log('org API URL:', `${getAPIUrl()}orgs/slug/${orgslug}`)
+  console.log('orgs API URL:', `${getAPIUrl()}orgs/user/page/1/limit/10`)
+  console.log('========================')
+
   const { data: org, error: orgError } = useSWR(
     `${getAPIUrl()}orgs/slug/${orgslug}`,
     (url) => swrFetcher(url, accessToken)
